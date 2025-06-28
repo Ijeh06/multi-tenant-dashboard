@@ -52,10 +52,10 @@ const SignIn: React.FC = () => {
         </div> */}
 
         {/* Sign In Form */}
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6 h-full" onSubmit={handleSubmit}>
           <input type="hidden" name="remember" defaultValue="true" />
           <div>
-            <label htmlFor="email-address" className="sr-only">
+            <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
               Email address
             </label>
             <input
