@@ -52,10 +52,10 @@ const SignIn: React.FC = () => {
         </div> */}
 
         {/* Sign In Form */}
-        <form className="mt-8 space-y-6 h-full" onSubmit={handleSubmit}>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <input type="hidden" name="remember" defaultValue="true" />
           <div>
-            <label htmlFor="email-address" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="email-address" className="sr-only">
               Email address
             </label>
             <input
@@ -64,7 +64,7 @@ const SignIn: React.FC = () => {
               type="email"
               autoComplete="email"
               required
-              className="appearance-none rounded-md shadow-xl block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm mb-4"
+              className="appearance-none rounded-md shadow-xl block w-full px-5 py-4 border border-gray-300 placeholder-gray-500 text-gray-900 text-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 mb-6"
               placeholder="Email address"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -80,7 +80,7 @@ const SignIn: React.FC = () => {
               type="password"
               autoComplete="current-password"
               required
-              className="appearance-none rounded-md shadow-xl block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+              className="appearance-none rounded-md shadow-xl block w-full px-5 py-4 border border-gray-300 placeholder-gray-500 text-gray-900 text-lg focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
