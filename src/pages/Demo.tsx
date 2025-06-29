@@ -5,9 +5,40 @@ import { Building2, Users, Shield, Zap, BarChart3, Lock, Globe, Layers, Presenta
 import TechnicalPresentation from '../components/demo/TechnicalPresentation';
 
 const Demo: React.FC = () => {
-  const { tenants, users, switchTenant, currentTenant } = useTenant();
+  const { setTenant, currentTenant } = useTenant();
   const { signIn } = useAuth();
   const [selectedDemo, setSelectedDemo] = useState<'tenants' | 'roles' | 'performance' | 'architecture' | 'presentation'>('tenants');
+
+  // Mock tenants data for demo purposes
+  const tenants = [
+    {
+      id: 'acme-corp',
+      name: 'Acme Corporation',
+      domain: 'acme-corp',
+      settings: {
+        primaryColor: '#3B82F6',
+        timezone: 'UTC',
+      },
+    },
+    {
+      id: 'tech-solutions',
+      name: 'Tech Solutions Inc',
+      domain: 'tech-solutions',
+      settings: {
+        primaryColor: '#10B981',
+        timezone: 'UTC',
+      },
+    },
+  ];
+
+  // Mock users data for demo purposes
+  const users = [
+    { id: '1', tenantId: 'acme-corp' },
+    { id: '2', tenantId: 'acme-corp' },
+    { id: '3', tenantId: 'acme-corp' },
+    { id: '4', tenantId: 'tech-solutions' },
+    { id: '5', tenantId: 'tech-solutions' },
+  ];
 
   const demoUsers = [
     { 
@@ -70,7 +101,7 @@ const Demo: React.FC = () => {
     // Find the tenant
     const tenant = tenants.find(t => t.name === tenantName);
     if (tenant) {
-      await switchTenant(tenant.id);
+      setTenant(tenant.id);
     }
     
     // Sign in the demo user
@@ -151,7 +182,7 @@ const Demo: React.FC = () => {
                     </div>
 
                     <button
-                      onClick={() => switchTenant(tenant.id)}
+                      onClick={() => setTenant(tenant.id)}
                       className={`mt-4 w-full py-2 px-4 rounded-lg transition-colors ${
                         currentTenant?.id === tenant.id
                           ? 'bg-green-100 text-green-800 border border-green-300'
