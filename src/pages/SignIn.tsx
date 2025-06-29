@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Building2, Eye, LogIn } from 'lucide-react';
 
@@ -9,6 +10,7 @@ const SignIn: React.FC = () => {
   const { signIn } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,12 +18,39 @@ const SignIn: React.FC = () => {
     setError(null);
 
     try {
-      await signIn(email, password);
+      const success = await signIn(email, password);
+      if (success) {
+        // Get user role and redirect accordingly
+        const userRole = email.includes('admin') ? 'admin' : 
+                        email.includes('manager') ? 'manager' : 'viewer';
+        
+        switch (userRole) {
+          case 'admin':
+            navigate('/');
+            break;
+          case 'manager':
+            navigate('/manager-dashboard');
+            break;
+          case 'viewer':
+            navigate('/viewer-dashboard');
+            break;
+          default:
+            navigate('/');
+        }
+      }
     } catch (err: any) {
       setError(err.message || 'Sign-in failed');
     } finally {
       setLoading(false);
     }
+  };
+
+  const quickSignIn = (email: string, role: string) => {
+    setEmail(email);
+    setPassword('demo123');
+    setTimeout(() => {
+      handleSubmit({ preventDefault: () => {} } as React.FormEvent);
+    }, 100);
   };
 
   return (
@@ -41,7 +70,7 @@ const SignIn: React.FC = () => {
         </div>
 
         {/* Demo Link */}
-        {/* <div className="text-center">
+        <div className="text-center">
           <Link 
             to="/demo" 
             className="inline-flex items-center px-4 py-2 border border-blue-300 rounded-md shadow-sm text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 transition-colors"
@@ -49,7 +78,7 @@ const SignIn: React.FC = () => {
             <Eye className="h-4 w-4 mr-2" />
             View Live Demo
           </Link>
-        </div> */}
+        </div>
 
         {/* Sign In Form */}
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -106,16 +135,43 @@ const SignIn: React.FC = () => {
         </form>
 
         {/* Demo Credentials */}
-        {/* <div className="mt-6">
+        <div className="mt-6">
           <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
             <h3 className="text-sm font-medium text-gray-900 mb-2">Demo Credentials</h3>
-            <div className="space-y-2 text-xs text-gray-600">
-              <div><strong>Admin:</strong> admin@acmecorp.com / demo123</div>
-              <div><strong>Manager:</strong> manager@techstart.com / demo123</div>
-              <div><strong>Viewer:</strong> viewer@globalsol.com / demo123</div>
+            <div className="space-y-2 text-xs">
+              <div className="flex justify-between items-center">
+                <span><strong>Admin:</strong> admin@acmecorp.com / demo123</span>
+                <button
+                  type="button"
+                  onClick={() => quickSignIn('admin@acmecorp.com', 'admin')}
+                  className="text-blue-600 hover:text-blue-800 underline"
+                >
+                  Quick Sign In
+                </button>
+              </div>
+              <div className="flex justify-between items-center">
+                <span><strong>Manager:</strong> manager@acmecorp.com / demo123</span>
+                <button
+                  type="button"
+                  onClick={() => quickSignIn('manager@acmecorp.com', 'manager')}
+                  className="text-blue-600 hover:text-blue-800 underline"
+                >
+                  Quick Sign In
+                </button>
+              </div>
+              <div className="flex justify-between items-center">
+                <span><strong>Viewer:</strong> viewer@acmecorp.com / demo123</span>
+                <button
+                  type="button"
+                  onClick={() => quickSignIn('viewer@acmecorp.com', 'viewer')}
+                  className="text-blue-600 hover:text-blue-800 underline"
+                >
+                  Quick Sign In
+                </button>
+              </div>
             </div>
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );

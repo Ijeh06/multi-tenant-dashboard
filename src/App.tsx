@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -28,12 +29,54 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/demo" element={<Demo />} />
-              <Route path="/" element={<ProtectedRoute><AppLayout><Index /></AppLayout></ProtectedRoute>} />
-              <Route path="/settings" element={<ProtectedRoute><AppLayout><Settings /></AppLayout></ProtectedRoute>} />
-              <Route path="/users" element={<ProtectedRoute><AppLayout><Users /></AppLayout></ProtectedRoute>} />
-              <Route path="/manager-dashboard" element={<ProtectedRoute><AppLayout><ManagerDashboard /></AppLayout></ProtectedRoute>} />
-              <Route path="/viewer-dashboard" element={<ProtectedRoute><AppLayout><ViewerDashboard /></AppLayout></ProtectedRoute>} />
-              <Route path="/analytics/:metric" element={<ProtectedRoute><AppLayout><AnalyticsDetail /></AppLayout></ProtectedRoute>} />
+              <Route 
+                path="/" 
+                element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <AppLayout><Index /></AppLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/settings" 
+                element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <AppLayout><Settings /></AppLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/users" 
+                element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <AppLayout><Users /></AppLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/manager-dashboard" 
+                element={
+                  <ProtectedRoute allowedRoles={['manager']}>
+                    <AppLayout><ManagerDashboard /></AppLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/viewer-dashboard" 
+                element={
+                  <ProtectedRoute allowedRoles={['viewer']}>
+                    <AppLayout><ViewerDashboard /></AppLayout>
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/analytics/:metric" 
+                element={
+                  <ProtectedRoute allowedRoles={['admin', 'manager']}>
+                    <AppLayout><AnalyticsDetail /></AppLayout>
+                  </ProtectedRoute>
+                } 
+              />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
